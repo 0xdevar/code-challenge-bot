@@ -4,8 +4,9 @@ import { challengeFactory } from "./functions/fn";
 import { Client, GatewayIntentBits } from "discord.js";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+import dotenv from "dotenv";
+dotenv.config();
 
-require("dotenv").config();
 const TOKEN = process.env.DISCORD_TOKEN;
 
 client.on("ready", () => {
