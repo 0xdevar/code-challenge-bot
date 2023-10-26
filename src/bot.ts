@@ -1,5 +1,4 @@
-import { getQuestion } from "./functions/fn";
-getQuestion("questions", 5);
+import { challengeFactory } from "./functions/fn";
 
 
 import { Client, GatewayIntentBits } from "discord.js";

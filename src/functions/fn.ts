@@ -1,3 +1,14 @@
+import { readdir, readFile } from 'node:fs/promises';
+
+const DATA_DIR = "data";
+
+export async function getRandomFile() {
+	const files = await readdir(DATA_DIR);
+	const filesCount = files.length;
+	const index = Math.floor(Math.random() * filesCount);
+	return files[index];
+}
+
 export const file_num = (num: number, power10: number) => {
     const power = 10 ** power10;
     const getNumberArr = (n: number) => String(n).split("");
@@ -10,25 +21,24 @@ export const file_num = (num: number, power10: number) => {
     return _0day.join("");
 };
 
-export const getQuestion = async (folderName: string, fileNumber: number) => {
-    const power10 = 6;
-    const file_select = await Bun.file(
-        `src/${folderName}/q_${file_num(fileNumber, power10)}.txt`
-    ).text();
-    const file_arr = file_select.split("@@@");
+	// factory to get the code challenge structure
+export const challengeFactory = async () => {
+	const file = await getRandomFile();
+	const content = await readFile(`${DATA_DIR}/${file}`);
+	const contentAsString = content.toString();
 
-    console.log(file_select);
+	const file_arr = contentAsString.split("@@@");
+	const file_obj = {
+		question: file_arr[0].split("\n")[0],
+		choices: file_arr[1].split("\n").filter((e) => !["", " "].includes(e)),
+			answer: Number(
+				file_arr[2]
+				.split("\n")
+				.filter((e) => !["", " "].includes(e))
+				.join()
+		),
+	};
 
-    const file_obj = {
-        question: file_arr[0].split("\n")[0],
-        choices: file_arr[1].split("\n").filter((e) => !["", " "].includes(e)),
-        anser: Number(
-            file_arr[2]
-                .split("\n")
-                .filter((e) => !["", " "].includes(e))
-                .join()
-        ),
-    };
-
-    return file_obj;
+	return file_obj;
 };
+
