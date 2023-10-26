@@ -1,0 +1,18 @@
+{
+    "name": "test",
+    "module": "bot.ts",
+    "type": "module",
+    "scripts": {
+        "dev": "bun ./src/bot.ts"
+    },
+    "devDependencies": {
+        "bun-types": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "discord.js": "^14.13.0",
+        "dotenv": "^16.3.1"
+    }
+}
