@@ -9,19 +9,19 @@ require("dotenv").config();
 const TOKEN = process.env.TOKEN;
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user!.tag}!`);
+	console.log(`Logged in as ${client.user!.tag}!`);
 });
 
 client.on("messageCreate", async (message) => {
 
-    switch(message.content) {
-        case "ping":
-            message.reply("Pong!");
-        break;
-        case "lala":
-            message.reply("fityou");
-        break;
-    }
+	switch(message.content) {
+		case "ping":
+			message.reply("Pong!");
+		break;
+		case "lala":
+			message.reply("fityou");
+		break;
+	}
 });
 
 client.login(TOKEN);
