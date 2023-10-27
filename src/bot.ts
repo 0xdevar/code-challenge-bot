@@ -1,4 +1,4 @@
-import { challengeFactory } from "./functions/fn";
+import { challengeFactory } from "./functions/fn.ts";
 
 
 import { Client, GatewayIntentBits } from "discord.js";
