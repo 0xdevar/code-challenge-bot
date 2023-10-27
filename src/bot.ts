@@ -1,28 +1,46 @@
 import { challengeFactory } from "./functions/fn.ts";
+import * as config from "./config.ts";
+import { Client, GatewayIntentBits, Events } from "discord.js";
 
-
-import { Client, GatewayIntentBits } from "discord.js";
-
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 import dotenv from "dotenv";
 dotenv.config();
 
-const TOKEN = process.env.DISCORD_TOKEN;
+function env(name: string) {
+	if (globalThis.Deno) {
+		return Deno.env.get(name);
+	}
+	return process.env[name];
+}
 
-client.on("ready", () => {
-	console.log(`Logged in as ${client.user!.tag}!`);
+const client = new Client({ 
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMembers,
+	] 
 });
 
-client.on("messageCreate", async (message) => {
+const TOKEN = env("DISCORD_TOKEN");
 
-	switch(message.content) {
-		case "ping":
-			message.reply("Pong!");
-		break;
-		case "lala":
-			message.reply("fityou");
-		break;
+async function boot() {
+	const channels = await client.channels.fetch(config.CHANNEL_ID);
+}
+
+client.on(Events.ClientReady, () => {
+	console.log(`Logged in as ${client.user!.tag}!`);
+	boot();
+});
+
+
+client.on(Events.MessageCreate, async (message) => {
+	if (message.author.bot) {
+		return;
 	}
+
+	const challenge = await challengeFactory();
+
+	message.reply(challenge.question);
 });
 
 client.login(TOKEN);
