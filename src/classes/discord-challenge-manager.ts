@@ -11,29 +11,29 @@ import {Client, TextChannel} from "discord.js"
 
 export class DiscordChallengeManager
 {
-    channelId: string;
-    client: Client;
-    channel?: TextChannel;
+	channelId: string;
+	client: Client;
+	channel?: TextChannel;
 
-    constructor(client: Client, channelId: string) {
-        this.client = client;
-        this.channelId = channelId;
-    }
-    
-    async boot() {
-        this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
+	constructor(client: Client, channelId: string) {
+		this.client = client;
+		this.channelId = channelId;
+	}
 
-        // check channel id 
-        if(!this.channel) {
-            throw "you'r channelId is not exist";
-        }
+	async boot() {
+		this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
 
-        this.setup()
-    } 
+		// check channel id 
+		if(!this.channel) {
+			throw "you'r channelId is not exist";
+		}
 
-    setup() {
-        this.channel?.send({
-            content: "Hello World!"
-        })
-    }
+		this.setup()
+	} 
+
+	setup() {
+		this.channel?.send({
+			content: "Hello World!"
+		})
+	}
 }

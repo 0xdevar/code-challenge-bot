@@ -20,7 +20,7 @@ function env(name: string) {
 const client = new Client({ 
 	intents: [
 		GatewayIntentBits.Guilds,
-	    GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildMembers,
 	] 
@@ -34,8 +34,8 @@ async function sendChallenge(channel: TextChannel): Promise<Message> {
 }
 
 async function boot() {
-    const challengeManager = new DiscordChallengeManager(client, config.CHANNEL_ID);
-    challengeManager.boot()
+	const challengeManager = new DiscordChallengeManager(client, config.CHANNEL_ID);
+	challengeManager.boot()
 }
 
 client.on(Events.ClientReady, () => {
@@ -44,11 +44,11 @@ client.on(Events.ClientReady, () => {
 
 client.on(Events.MessageCreate, async (message: Message) => {
 
-    if(message.content == 'ping') {
-        message.reply("Pong!")
-        return;
-    }
-    
+	if(message.content == 'ping') {
+		message.reply("Pong!")
+		return;
+	}
+
 	if (g_isActivated) {
 		return;
 	}
