@@ -35,7 +35,7 @@ async function sendChallenge(channel: TextChannel): Promise<Message> {
 
 async function boot() {
 	const challengeManager = new DiscordChallengeManager(client, config.CHANNEL_ID);
-	challengeManager.boot()
+	challengeManager.boot();
 }
 
 client.on(Events.ClientReady, () => {
@@ -44,8 +44,8 @@ client.on(Events.ClientReady, () => {
 
 client.on(Events.MessageCreate, async (message: Message) => {
 
-	if(message.content == 'ping') {
-		message.reply("Pong!")
+	if (message.content == 'ping') {
+		message.reply("Pong!");
 		return;
 	}
 
