@@ -2,7 +2,7 @@ import { challengeFactory } from "../functions/fn.ts";
 
 import { Client, GatewayIntentBits, Events, TextChannel, Message } from "discord.js";
 
-class DiscordChallenge
+export class DiscordChallenge
 {
 	channel: TextChannel;
 	client: Client;

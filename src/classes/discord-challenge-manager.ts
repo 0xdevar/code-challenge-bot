@@ -1,16 +1,39 @@
-import {Client} from "discord.js"
+import {Client, TextChannel} from "discord.js"
 
-/*
-	* create challenges
-	* manage active challenge
-	* destory challenge
-	* aware of the time
+/**
+ *
+ * create challenges
+ * manage active challenge
+ * destory challengs
+ * aware of the time
+ *
  */
 
-class DiscordChallengeManager
+export class DiscordChallengeManager
 {
-	client: Client;
-	constructor(client: Client) {
-		this.client = client;
-	}
+    channelId: string;
+    client: Client;
+    channel?: TextChannel;
+
+    constructor(client: Client, channelId: string) {
+        this.client = client;
+        this.channelId = channelId;
+    }
+    
+    async boot() {
+        this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
+
+        // check channel id 
+        if(!this.channel) {
+            throw "you'r channelId is not exist";
+        }
+
+        this.setup()
+    } 
+
+    setup() {
+        this.channel?.send({
+            content: "Hello World!"
+        })
+    }
 }

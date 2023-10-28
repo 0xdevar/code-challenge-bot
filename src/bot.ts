@@ -3,41 +3,10 @@ import * as config from "./config.ts";
 import { Client, GatewayIntentBits, Events, TextChannel, Message } from "discord.js";
 
 import dotenv from "dotenv";
+import { DiscordChallengeManager } from "./classes/discord-challenge-manager.ts";
 dotenv.config();
 
 let g_isActivated = false;
-
-class DiscordChallenge
-{
-	channel: TextChannel;
-	client: Client;
-	_messageId?: Message;
-	_challenge?: any; // todo: add strict type
-	constructor(client: Client, channel: TextChannel) {
-		this.channel = channel;
-		this.client = client;
-	}
-
-	async _send(): Promise<Message> {
-		this._challenge = await challengeFactory();
-		return this.channel?.send(this._challenge.question);
-	}
-
-	async _handleUserInput(message: Message) {
-			const author = message.author;
-			const content = message.content;
-
-	}
-
-	async create() {
-		this._messageId = await this._send()
-		this.client.on(Events.MessageCreate, this._handleUserInput);
-	}
-
-	destroy() {
-		this.client.off(Events.MessageCreate, this._handleUserInput);
-	}
-}
 
 function env(name: string) {
 	// @ts-ignore
@@ -51,7 +20,7 @@ function env(name: string) {
 const client = new Client({ 
 	intents: [
 		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
+	    GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildMembers,
 	] 
@@ -65,12 +34,8 @@ async function sendChallenge(channel: TextChannel): Promise<Message> {
 }
 
 async function boot() {
-	const targetChannel = await client.channels.fetch(config.CHANNEL_ID);
-	if (!targetChannel) {
-		throw new Error(`Could not find the channel ${config.CHANNEL_ID}`);
-	}
-	const interval = 1000 * (config.CHALLENGE_INTERVAL ?? 30);
-	setInterval(() => sendChallenge(targetChannel as TextChannel), interval);
+    const challengeManager = new DiscordChallengeManager(client, config.CHANNEL_ID);
+    challengeManager.boot()
 }
 
 client.on(Events.ClientReady, () => {
@@ -78,6 +43,12 @@ client.on(Events.ClientReady, () => {
 });
 
 client.on(Events.MessageCreate, async (message: Message) => {
+
+    if(message.content == 'ping') {
+        message.reply("Pong!")
+        return;
+    }
+    
 	if (g_isActivated) {
 		return;
 	}
