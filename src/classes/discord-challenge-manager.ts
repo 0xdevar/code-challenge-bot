@@ -25,7 +25,7 @@ export class DiscordChallengeManager
 
 		// check channel id 
 		if(!this.channel) {
-			throw "you'r channelId is not exist";
+			throw Error("you'r channelId is not exist");
 		}
 
 		this.setup()
