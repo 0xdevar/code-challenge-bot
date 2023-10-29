@@ -16,8 +16,9 @@ export class DiscordChallenge {
 		const question = this._challenge.question;
 		return `
 ${question}
-		---
+\`\`\`
 ${choices}
+\`\`\`
 		`;
 	}
 }
