@@ -29,11 +29,6 @@ const client = new Client({
 
 const TOKEN = env("DISCORD_TOKEN");
 
-async function sendChallenge(channel: TextChannel): Promise<Message> {
-	const challenge = await challengeFactory();
-	return channel?.send(challenge.question);
-}
-
 async function boot() {
 	const challengeManager = new DiscordChallengeManager(client, config.CHANNEL_ID);
 	challengeManager.boot();
