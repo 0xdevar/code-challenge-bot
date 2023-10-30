@@ -15,6 +15,19 @@ export class DiscordChallengeManager
 		// we must bind it to allow the `method` to access `this` when we attach it to an event
 		this.handleInput = this.handleInput.bind(this);
 	}
+	/*
+		 * what about retrieving all challenges from a discord channel
+		 * for instance, load all the challenges into the memory, then
+		 * choose a question randomely
+		 *
+		 * advantages:
+		 * better for accessibility for members who entitiled for adding, removing, validating challenges
+		 * better for arabic support as I don't a decent arabic support for now
+		 * better for sync, as all tester will have the same questions.
+		 *
+		 * disadvanteges:
+		 * /nothing for now/
+	*/
 
 	async boot() {
 		this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
