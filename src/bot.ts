@@ -1,9 +1,10 @@
+import { Client, GatewayIntentBits, Events, TextChannel, Message } from "discord.js";
+import dotenv from "dotenv";
+
 import { challengeFactory } from "./functions/fn.ts";
 import * as config from "./config.ts";
-import { Client, GatewayIntentBits, Events, TextChannel, Message } from "discord.js";
-
-import dotenv from "dotenv";
 import { DiscordChallengeManager } from "./classes/discord-challenge-manager.ts";
+
 dotenv.config();
 
 let g_isActivated = false;
