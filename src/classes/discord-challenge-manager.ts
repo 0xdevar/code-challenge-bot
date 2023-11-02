@@ -1,20 +1,20 @@
-import {Client, TextChannel, Message, Events} from "discord.js"
+import {Client, TextChannel, Message, Events} from "discord.js";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
-export class DiscordChallengeManager
-{
+export class DiscordChallengeManager {
 	channelId: string;
 	client: Client;
 	channel?: TextChannel;
-	_challenge?: any;
+	_challenge?: DiscordChallenge;
 
 	constructor(client: Client, channelId: string) {
 		this.client = client;
 		this.channelId = channelId;
 
-		// we must bind it to allow the `method` to access `this` when we attach it to an event
+		// !! we must bind it to allow the `method` to access `this` when we attach it to an event
 		this.handleInput = this.handleInput.bind(this);
 	}
+
 	/*
 		 * what about retrieving all challenges from a discord channel
 		 * for instance, load all the challenges into the memory, then
@@ -32,7 +32,7 @@ export class DiscordChallengeManager
 	async boot() {
 		this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
 
-		// check channel id 
+		// check channel id
 		if (!this.channel) {
 			throw Error(`Channel [${this.channelId}] is not found.`);
 		}
@@ -41,10 +41,10 @@ export class DiscordChallengeManager
 	}
 
 	handleInput(message: Message) {
-		const author = message.author;
+		const _author = message.author;
 
 		const challenge = this._challenge;
-		if (!challenge.play(message.content)) {
+		if (!challenge?.play(message.content)) {
 			console.log("failed", message.content);
 			return;
 		}
@@ -58,16 +58,17 @@ export class DiscordChallengeManager
 	}
 
 	async setup() {
-		this._challenge = new DiscordChallenge();
+		this._challenge = new DiscordChallenge(this.client);
 		await this._challenge.setup();
 
 		const content = this._challenge.content();
-		const message = await this.channel?.send(content);
+
+		await this.channel?.send({embeds: [content]});
 
 		this.client.on(Events.MessageCreate, this.handleInput);
 	}
 
-	async destroy() {
+	destroy() {
 		this.client.off(Events.MessageCreate, this.handleInput);
 	}
 }
