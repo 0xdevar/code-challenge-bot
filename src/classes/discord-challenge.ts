@@ -32,24 +32,23 @@ export class DiscordChallenge {
 		}
 
 		const challenge = new EmbedBuilder()
-				.setColor(0x680001)
-				.setTitle("التحدي")
-				.setAuthor({
-					name: "0x",
-					iconURL: "https://cdn.discordapp.com/icons/942802258528198666/64ee7cadddcb9eac46a09cec3c1867e2.webp?size=160"
-				})
-				.setThumbnail("https://cdn.discordapp.com/icons/942802258528198666/64ee7cadddcb9eac46a09cec3c1867e2.webp?size=160")
-				.addFields({name: "⠀", value: "⠀"})
-				.addFields({name: "السـؤال", value: this._challenge.challenge, inline: false})
-				.addFields({name: "⠀", value: "⠀"})
-				.setTimestamp();
+			.setColor(0x680001)
+			.setTitle("التحدي")
+			.setAuthor({
+				name: "0x",
+				iconURL: "https://cdn.discordapp.com/icons/942802258528198666/64ee7cadddcb9eac46a09cec3c1867e2.webp?size=160"
+			})
+			.setThumbnail("https://cdn.discordapp.com/icons/942802258528198666/64ee7cadddcb9eac46a09cec3c1867e2.webp?size=160")
+			.addFields({name: "⠀", value: "⠀"})
+			.addFields({name: "السـؤال", value: this._challenge.challenge, inline: false})
+			.addFields({name: "⠀", value: "⠀"})
+			.setTimestamp();
 
 
 		for (let i = 0; i < this._challenge.choices.length; i++) {
 			const choice = this._challenge.choices[i];
 			const icon = DiscordChallenge.icons[i];
-			challenge.addFields({name: icon!, value: choice, inline: true});
-			challenge.addFields({name: "⠀", value: "⠀"});
+			challenge.addFields({name: icon!, value: choice, inline: false});
 		}
 
 		return challenge;

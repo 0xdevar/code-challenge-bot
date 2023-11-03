@@ -1,3 +1,3 @@
 export const CHANNEL_ID = "1167775329306288240";
 export const CHANNEL_SOURCE_ID = "1169593083982258186";
-export const CHALLENGE_INTERVAL = 30; // in seconds
+export const CHALLENGE_INTERVAL = 1000 * 60 * 15;

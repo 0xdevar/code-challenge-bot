@@ -1,4 +1,4 @@
-import {Client, TextChannel, Message, Events} from "discord.js";
+import {Client, TextChannel, Message, Events, EmbedBuilder, Embed} from "discord.js";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
 
@@ -41,16 +41,6 @@ export class DiscordChallengeManager {
 		await this.setup();
 	}
 
-	async _screamLeaderboard() {
-		const users = repo.getUsersByScores();
-
-		const usersAsString = users
-			.map((user: any) => `<@${user.id}> : ${user.score}`)
-			.join(", ");
-
-		await this.channel?.send(usersAsString);
-	}
-
 	async handleInput(message: Message) {
 		const author = message.author;
 
@@ -64,9 +54,22 @@ export class DiscordChallengeManager {
 
 		repo.addUserScore(author.id, 1); // todo: add the score it to config
 
-		await this._currentMessage?.edit(`<@${author.id}>`);
 
-		await this._screamLeaderboard();
+		const embeds = this._currentMessage?.embeds as Embed[];
+
+		embeds[0].fields.push({name: "⠀", value: "⠀"});
+		embeds[0].fields.push({name: "الفائز", value: `<@${author.id}>`});
+		embeds[0].fields.push({name: "⠀", value: "⠀"});
+
+		// add leaderboard
+		const leaderboards = repo.getUsersByScores(5);
+
+		for (let i = 0; i < leaderboards.length; i++) {
+			const user = leaderboards[i];
+			embeds[0].fields.push({name: (i + 1).toString(), value: `<@${user.id}> | ${user.score}`, inline: false});
+		}
+
+		await this._currentMessage?.edit({embeds});
 
 		setTimeout(() => {
 			this.setup();
