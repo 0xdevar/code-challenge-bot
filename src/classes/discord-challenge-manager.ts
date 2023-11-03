@@ -1,4 +1,4 @@
-import {Client, TextChannel, Message, Events, EmbedBuilder, Embed} from "discord.js";
+import {Client, TextChannel, Message, Events, Embed} from "discord.js";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
 
@@ -33,7 +33,6 @@ export class DiscordChallengeManager {
 	async boot() {
 		this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
 
-		// check channel id
 		if (!this.channel) {
 			throw Error(`Channel [${this.channelId}] is not found.`);
 		}
