@@ -1,11 +1,26 @@
 import {Client, TextChannel, Message, Events} from "discord.js";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
+
+const repo = await (async () => {
+	if (process.env.NODE_ENV === "dev") {
+		console.log("using in memory repository");
+		return await import("../memory-repository.ts");
+	} else {
+		console.log("using in sqlite repository");
+		return await import("../sqlite-repository.ts");
+	}
+})();
+
+import * as config from "../config.ts";
+
 export class DiscordChallengeManager {
 	channelId: string;
 	client: Client;
 	channel?: TextChannel;
-	_challenge?: DiscordChallenge;
+
+	private _challenge?: DiscordChallenge;
+	private _currentMessage?: Message;
 
 	constructor(client: Client, channelId: string) {
 		this.client = client;
@@ -14,20 +29,6 @@ export class DiscordChallengeManager {
 		// !! we must bind it to allow the `method` to access `this` when we attach it to an event
 		this.handleInput = this.handleInput.bind(this);
 	}
-
-	/*
-		 * what about retrieving all challenges from a discord channel
-		 * for instance, load all the challenges into the memory, then
-		 * choose a question randomely
-		 *
-		 * advantages:
-		 * better for accessibility for members who entitiled for adding, removing, validating challenges
-		 * better for arabic support as I don't a decent arabic support for now
-		 * better for sync, as all tester will have the same questions.
-		 *
-		 * disadvanteges:
-		 * /nothing for now/
-	*/
 
 	async boot() {
 		this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
@@ -40,35 +41,57 @@ export class DiscordChallengeManager {
 		await this.setup();
 	}
 
-	handleInput(message: Message) {
-		const _author = message.author;
+	async _screamLeaderboard() {
+		const users = repo.getUsersByScores();
+
+		const usersAsString = users
+			.map((user: any) => `<@${user.id}> : ${user.score}`)
+			.join(", ");
+
+		await this.channel?.send(usersAsString);
+	}
+
+	async handleInput(message: Message) {
+		const author = message.author;
 
 		const challenge = this._challenge;
+
 		if (!challenge?.play(message.content)) {
-			console.log("failed", message.content);
 			return;
 		}
 
-		console.log("success", message.content);
+		this.destroy(); // NOTE: we should clear the event first to avoid registering two events
 
-		// todo: add points to author id
+		repo.addUserScore(author.id, 1); // todo: add the score it to config
 
-		this.destroy();
-		this.setup(); // recreate a game, todo: execute after X time
+		await this._currentMessage?.edit(`<@${author.id}>`);
+
+		await this._screamLeaderboard();
+
+		setTimeout(() => {
+			this.setup();
+		}, config.CHALLENGE_INTERVAL);
 	}
 
 	async setup() {
+		if (this._challenge) {
+			console.log("Challenge already setup.");
+			return;
+		}
+
 		this._challenge = new DiscordChallenge(this.client);
+
 		await this._challenge.setup();
 
 		const content = this._challenge.content();
 
-		await this.channel?.send({embeds: [content]});
+		this._currentMessage = await this.channel?.send({embeds: [content]});
 
 		this.client.on(Events.MessageCreate, this.handleInput);
 	}
 
 	destroy() {
+		this._challenge = undefined;
 		this.client.off(Events.MessageCreate, this.handleInput);
 	}
 }

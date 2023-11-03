@@ -11,6 +11,7 @@ export async function getRandomChallenge(client: Client): Promise<Challenge> {
 
 	const messages = await channel.messages.fetch({limit: 100});
 
+	// @ts-ignore: allow deno compile command
 	const message = messages.random();
 
 	if (!message) {
