@@ -1,4 +1,4 @@
-import {Client, TextChannel, Message, Events, Embed} from "discord.js";
+import {Client, TextChannel, Message, Events, Embed, MessageType} from "discord.js";
 
 import * as config from "../config.ts";
 import {DiscordChallenge} from "./discord-challenge.ts";
@@ -42,6 +42,16 @@ export class DiscordChallengeManager {
 	}
 
 	async handleInput(message: Message) {
+		if (message.type !== MessageType.Reply) {
+			return;
+		}
+
+		const challengeMessage = message.reference;
+
+		if (challengeMessage?.messageId !== this._currentMessage?.id) {
+			return;
+		}
+
 		const author = message.author;
 
 		const challenge = this._challenge;
