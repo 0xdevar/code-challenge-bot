@@ -57,10 +57,13 @@ export class DiscordChallengeManager {
 		const challenge = this._challenge;
 
 		if (!challenge?.play(message.content)) {
+			message.react("❌");
 			return;
 		}
 
 		this.destroy(); // NOTE: we should clear the event first to avoid registering two events
+
+		message.react("🎉");
 
 		repo.addUserScore(author.id, 1); // todo: add the score it to config
 
@@ -68,15 +71,21 @@ export class DiscordChallengeManager {
 		const embeds = this._currentMessage?.embeds as Embed[];
 
 		embeds[0].fields.push({name: "⠀", value: "⠀"});
-		embeds[0].fields.push({name: "الفائز", value: `<@${author.id}>`});
+		embeds[0].fields.push({name: "الفائز 🏆", value: `🏅 <@${author.id}>`});
 		embeds[0].fields.push({name: "⠀", value: "⠀"});
 
 		// add leaderboard
-		const leaderboards = repo.getUsersByScores(5);
+		const leaderboards = repo.getUsersByScores(3);
+		const icons = ["🥇", "🥈", "🥉"];
 
 		for (let i = 0; i < leaderboards.length; i++) {
 			const user = leaderboards[i];
-			embeds[0].fields.push({name: (i + 1).toString(), value: `<@${user.id}> | ${user.score}`, inline: false});
+			const icon = icons.shift();
+			embeds[0].fields.push({
+				name: icon ?? (i + 1).toString(),
+				value: `<@${user.id}> | ${user.score}`,
+				inline: false
+			});
 		}
 
 		await this._currentMessage?.edit({embeds});
@@ -98,7 +107,7 @@ export class DiscordChallengeManager {
 
 		const content = this._challenge.content();
 
-		this._currentMessage = await this.channel?.send({embeds: [content]});
+		this._currentMessage = await this.channel?.send(content);
 
 		this.client.on(Events.MessageCreate, this.handleInput);
 	}

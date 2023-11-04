@@ -16,8 +16,8 @@ export class Challenge {
 		const choices = chunks[1].split("\n").filter(l => l !== "");
 		const answer = parseInt(chunks[2].split("\n").find(l => l !== "")!);
 
-		if (!answer) {
-			throw new Error("Could not parse");
+		if (!answer && answer !== 0) {
+			throw new Error(`Could not parse ${answer}`);
 		}
 
 		return new Challenge(question, choices, answer);
