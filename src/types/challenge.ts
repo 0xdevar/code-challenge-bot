@@ -12,7 +12,7 @@ export class Challenge {
 			throw new Error("Invalid input format to parse.");
 		}
 
-		const question = chunks[0].split("\n").filter(l => l !== "").join();
+		const question = chunks[0];
 		const choices = chunks[1].split("\n").filter(l => l !== "");
 		const answer = parseInt(chunks[2].split("\n").find(l => l !== "")!);
 

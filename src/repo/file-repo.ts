@@ -14,5 +14,6 @@ export async function getRandomChallenge(): Promise<Challenge> {
 	const file = await getRandomFile();
 	const content = await readFile(`${DATA_DIR}/${file}`);
 	const contentAsString = content.toString();
-	return Challenge.parse(contentAsString);
+	const finalContent = contentAsString.replace(/(^```|```$)/g, "");
+	return Challenge.parse(finalContent);
 }

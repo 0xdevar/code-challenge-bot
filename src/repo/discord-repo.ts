@@ -17,7 +17,7 @@ export async function getRandomChallenge(client: Client): Promise<Challenge> {
 		throw new Error(`No challenge found in channel [${config.CHANNEL_SOURCE_ID}]`);
 	}
 
-	const content = message.content.replaceAll("`", "");
+	const content = message.content.replace(/(^```|```$)/g, "");
 
 	return Challenge.parse(content);
 }
