@@ -1,4 +1,6 @@
 import {Client, TextChannel, Message, Events, Embed} from "discord.js";
+
+import * as config from "../config.ts";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
 
@@ -12,7 +14,6 @@ const repo = await (async () => {
 	}
 })();
 
-import * as config from "../config.ts";
 
 export class DiscordChallengeManager {
 	channelId: string;
