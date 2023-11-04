@@ -48,7 +48,7 @@ export class DiscordChallenge {
 		for (let i = 0; i < this._challenge.choices.length; i++) {
 			const choice = this._challenge.choices[i];
 			const icon = DiscordChallenge.icons[i];
-			challenge.addFields({name: icon[0], value: choice, inline: false});
+			challenge.addFields({name: icon[0], value: `\`${choice}\``, inline: false});
 		}
 
 		return {
