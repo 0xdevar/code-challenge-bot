@@ -55,7 +55,7 @@ export class DiscordChallenge {
 			content: `
 			رد ع الرساله باحد الخيارات هذي
 			${DiscordChallenge.icons.map(i => i[0]).join(", ")}
-			@here
+			<@&1170376054775480340>
 			`,
 			embeds: [challenge]
 		};
