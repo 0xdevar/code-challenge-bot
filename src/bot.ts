@@ -1,8 +1,8 @@
-import {Client, GatewayIntentBits, Events, Message} from "discord.js";
+import {Client, Events, GatewayIntentBits, Message} from "discord.js";
 import dotenv from "dotenv";
+import {DiscordChallengeManager} from "./classes/discord-challenge-manager.ts";
 
 import * as config from "./config.ts";
-import {DiscordChallengeManager} from "./classes/discord-challenge-manager.ts";
 
 dotenv.config();
 
@@ -39,7 +39,7 @@ client.on(Events.ClientReady, () => {
 });
 
 client.on(Events.MessageCreate, (message: Message) => {
-	if (message.content == 'Ping') {
+	if (message.content == "Ping") {
 		message.reply("Pong!");
 		return;
 	}

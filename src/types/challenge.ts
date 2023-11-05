@@ -1,7 +1,7 @@
 export class Challenge {
 	private constructor(public challenge: string,
-											public choices: string[],
-											public answer: number) {
+						public choices: string[],
+						public answer: number) {
 
 	}
 

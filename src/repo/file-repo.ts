@@ -1,5 +1,5 @@
-import {Challenge} from "../types/challenge.ts";
 import {readdir, readFile} from "node:fs/promises";
+import {Challenge} from "../types/challenge.ts";
 
 const DATA_DIR = "data";
 

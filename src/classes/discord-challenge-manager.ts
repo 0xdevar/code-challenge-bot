@@ -1,4 +1,4 @@
-import {Client, TextChannel, Message, Events, Embed, MessageType} from "discord.js";
+import {Client, Embed, Events, Message, MessageType, TextChannel} from "discord.js";
 
 import * as config from "../config.ts";
 import {DiscordChallenge} from "./discord-challenge.ts";
@@ -31,7 +31,7 @@ export class DiscordChallengeManager {
 		this.handleInput = this.handleInput.bind(this);
 	}
 
-	async boot() {
+	async boot(): Promise<void> {
 		this.channel = await this.client.channels.fetch(this.channelId) as TextChannel;
 
 		if (!this.channel) {
@@ -41,7 +41,7 @@ export class DiscordChallengeManager {
 		await this.setup();
 	}
 
-	async handleInput(message: Message) {
+	async handleInput(message: Message): Promise<void> {
 		if (message.type !== MessageType.Reply) {
 			return;
 		}
@@ -95,7 +95,7 @@ export class DiscordChallengeManager {
 		}, config.CHALLENGE_INTERVAL);
 	}
 
-	async setup() {
+	async setup(): Promise<void> {
 		if (this._challenge) {
 			console.log("Challenge already setup.");
 			return;
@@ -112,7 +112,7 @@ export class DiscordChallengeManager {
 		this.client.on(Events.MessageCreate, this.handleInput);
 	}
 
-	destroy() {
+	destroy(): void {
 		this._challenge = undefined;
 		this.client.off(Events.MessageCreate, this.handleInput);
 	}
