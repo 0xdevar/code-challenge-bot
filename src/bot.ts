@@ -35,12 +35,7 @@ client.on(Events.ClientReady, () => {
 	console.log(`Logged in as ${client.user!.tag}!`);
 });
 
-client.on(Events.MessageCreate, (message: Message) => {
-	if (message.content == "Ping") {
-		message.reply("Pong!");
-		return;
-	}
-
+client.on(Events.MessageCreate, (_: Message) => {
 	if (g_isActivated) {
 		return;
 	}
