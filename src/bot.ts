@@ -5,16 +5,6 @@ import * as config from "./config.ts";
 
 let g_isActivated = false;
 
-function env(name: string) {
-	// @ts-ignore: check if this running using deno
-	if (globalThis.Deno) {
-		// @ts-ignore: indeed was running in deno
-		return Deno.env.get(name);
-	}
-	// @ts-ignore: indeed running for node api
-	return process.env[name];
-}
-
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -23,8 +13,6 @@ const client = new Client({
 		GatewayIntentBits.GuildMembers,
 	]
 });
-
-const TOKEN = env("DISCORD_TOKEN");
 
 function boot() {
 	const challengeManager = new DiscordChallengeManager(client, config.CHANNEL_ID);
@@ -44,4 +32,4 @@ client.on(Events.MessageCreate, (_: Message) => {
 	g_isActivated = true;
 });
 
-client.login(TOKEN);
+client.login(config.TOKEN);
