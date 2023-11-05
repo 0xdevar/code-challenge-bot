@@ -1,3 +1,5 @@
-export const CHANNEL_ID = "1167775329306288240";
-export const CHANNEL_SOURCE_ID = "1169593083982258186";
-export const CHALLENGE_INTERVAL = 1000 * 60 * 15;
+export const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
+export const CHANNEL_SOURCE_ID = process.env.DISCORD_CHANNEL_SOURCE_ID;
+export const CHALLENGE_INTERVAL = process.env.CHALLENGE_INTERVAL !== undefined
+								  ? Number(process.env.CHALLENGE_INTERVAL)
+								  : 1000 * 60 * 15;
