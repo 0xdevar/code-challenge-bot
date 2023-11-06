@@ -119,6 +119,7 @@ export class DiscordChallengeManager {
 		this._currentMessage = await this.channel?.send(content);
 
 		this._repeatInterval = setInterval(async () => {
+			this._challenge?.resetTries();
 			await this._currentMessage?.delete();
 			this._currentMessage = await this.channel?.send(content);
 		}, config.CHALLENGE_INTERVAL);

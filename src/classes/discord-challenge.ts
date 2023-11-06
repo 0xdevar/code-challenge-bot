@@ -21,6 +21,10 @@ export class DiscordChallenge {
 		return !this._triedPlayers.includes(id);
 	}
 
+	resetTries() {
+		this._triedPlayers = [];
+	}
+
 	addTries(id: string): void {
 		this._triedPlayers.push(id);
 	}
