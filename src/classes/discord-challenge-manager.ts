@@ -22,6 +22,7 @@ export class DiscordChallengeManager {
 
 	private _challenge?: DiscordChallenge;
 	private _currentMessage?: Message;
+	private _repeatInterval?: NodeJS.Timer;
 
 	constructor(client: Client, channelId: string) {
 		this.client = client;
@@ -117,10 +118,16 @@ export class DiscordChallengeManager {
 
 		this._currentMessage = await this.channel?.send(content);
 
+		this._repeatInterval = setInterval(async () => {
+			await this._currentMessage?.delete();
+			this._currentMessage = await this.channel?.send(content);
+		}, config.CHALLENGE_INTERVAL);
+
 		this.client.on(Events.MessageCreate, this.handleInput);
 	}
 
 	destroy(): void {
+		clearInterval(this._repeatInterval);
 		this._challenge = undefined;
 		this.client.off(Events.MessageCreate, this.handleInput);
 	}
