@@ -1,6 +1,7 @@
 import {Client, Embed, Events, Message, MessageType, TextChannel} from "discord.js";
 
 import * as config from "../config.ts";
+import {getUsersOrderedByScores} from "../sqlite-repository.ts";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
 
@@ -79,12 +80,14 @@ export class DiscordChallengeManager {
 
 		const embeds = this._currentMessage?.embeds as Embed[];
 
+		const userScore = repo.getUserScore(author.id)?.score ?? 0;
+
 		embeds[0].fields.push({name: "⠀", value: "⠀"});
-		embeds[0].fields.push({name: "الفائز 🏆", value: `🏅 <@${author.id}>`});
+		embeds[0].fields.push({name: "الفائز 🏆", value: `🏅 <@${author.id}> | ${userScore}`});
 		embeds[0].fields.push({name: "⠀", value: "⠀"});
 
 		// add leaderboard
-		const leaderboards = repo.getUsersByScores(3);
+		const leaderboards = repo.getUsersOrderedByScores(3);
 		const icons = ["🥇", "🥈", "🥉"];
 
 		for (let i = 0; i < leaderboards.length; i++) {

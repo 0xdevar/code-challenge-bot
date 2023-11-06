@@ -17,7 +17,12 @@ export function addUserScore(id: string, score: number): void {
 	query.run(id, score, score, id);
 }
 
-export function getUsersByScores(limit: number = 10): User[] {
+export function getUsersOrderedByScores(limit: number = 10): User[] {
 	const query = db.query(`SELECT id, score FROM users ORDER BY score DESC LIMIT ?;`);
 	return query.all(limit) as User[];
+}
+
+export function getUserScore(id: string): User | undefined {
+	const query = db.query(`SELECT id, score FROM users WHERE id = ?;`);
+	return query.get(id) as User;
 }
