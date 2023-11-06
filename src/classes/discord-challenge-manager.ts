@@ -56,7 +56,15 @@ export class DiscordChallengeManager {
 
 		const challenge = this._challenge;
 
-		if (!challenge?.play(message.content)) {
+
+		if (!challenge?.canPlay(author.id)) {
+			message.react("🤫");
+			return;
+		}
+
+		challenge?.addTries(author.id);
+
+		if (!challenge?.isValidInput(message.content)) {
 			message.react("❌");
 			return;
 		}

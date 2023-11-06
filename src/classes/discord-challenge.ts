@@ -8,6 +8,7 @@ const iconURL = "https://cdn.discordapp.com/icons/942802258528198666/64ee7cadddc
 export class DiscordChallenge {
 	static icons: string[][] = [["1️⃣", "1"], ["2️⃣", "2"], ["3️⃣", "3"]];
 	private _challenge?: Challenge;
+	private _triedPlayers: string[] = [];
 
 	constructor(private client: Client) {
 	}
@@ -16,7 +17,15 @@ export class DiscordChallenge {
 		this._challenge = await getRandomChallenge(this.client);
 	}
 
-	play(input: string): boolean {
+	canPlay(id: string) {
+		return !this._triedPlayers.includes(id);
+	}
+
+	addTries(id: string): void {
+		this._triedPlayers.push(id);
+	}
+
+	isValidInput(input: string): boolean {
 		const validIndex = this._challenge?.answer;
 
 		if (!validIndex && validIndex !== 0) {
