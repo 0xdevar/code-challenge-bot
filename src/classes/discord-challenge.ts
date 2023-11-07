@@ -17,11 +17,11 @@ export class DiscordChallenge {
 		this._challenge = await getRandomChallenge(this.client);
 	}
 
-	canPlay(id: string) {
+	canPlay(id: string): boolean {
 		return !this._triedPlayers.includes(id);
 	}
 
-	resetTries() {
+	resetTries(): void {
 		this._triedPlayers = [];
 	}
 
