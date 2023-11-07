@@ -1,5 +1,7 @@
 import {Client, EmbedBuilder} from "discord.js";
 
+import * as meta from "../meta.ts";
+
 import {getRandomChallenge} from "../repo/discord-repo.ts";
 import {Challenge} from "../types/challenge.ts";
 
@@ -58,6 +60,7 @@ export class DiscordChallenge {
 			.addFields({name: "⠀", value: "⠀"})
 			.addFields({name: "السـؤال 🤔", value: this._challenge.challenge, inline: false})
 			.addFields({name: "⠀", value: "⠀"})
+			.setFooter({text: meta.VERSION})
 			.setTimestamp();
 
 

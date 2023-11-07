@@ -1,16 +1,13 @@
 import {Client, Embed, Events, Message, MessageType, TextChannel} from "discord.js";
 
 import * as config from "../config.ts";
-import {getUsersOrderedByScores} from "../sqlite-repository.ts";
 import {DiscordChallenge} from "./discord-challenge.ts";
 
 
 const repo = await (async () => {
 	if (process.env.NODE_ENV === "dev") {
-		console.log("using in memory repository");
 		return await import("../memory-repository.ts");
 	} else {
-		console.log("using in sqlite repository");
 		return await import("../sqlite-repository.ts");
 	}
 })();
@@ -94,7 +91,7 @@ export class DiscordChallengeManager {
 			const user = leaderboards[i];
 			const icon = icons.shift();
 			embeds[0].fields.push({
-				name: '',
+				name: "",
 				value: `${icon} <@${user.id}> 🪙 **${user.score}**`,
 				inline: false
 			});

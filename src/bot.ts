@@ -3,6 +3,8 @@ import {DiscordChallengeManager} from "./classes/discord-challenge-manager.ts";
 
 import * as config from "./config.ts";
 
+import * as meta from "./meta.ts";
+
 let g_isActivated = false;
 
 const client = new Client({
@@ -20,7 +22,7 @@ function boot() {
 }
 
 client.on(Events.ClientReady, () => {
-	console.log(`Logged in as ${client.user!.tag}!`);
+	console.log(`Logged in as ${client.user!.tag}! ${meta.VERSION}`);
 });
 
 client.on(Events.MessageCreate, (_: Message) => {
@@ -31,5 +33,11 @@ client.on(Events.MessageCreate, (_: Message) => {
 	boot();
 	g_isActivated = true;
 });
+
+console.log(`
+CHALLENGE_INTERVAL: ${config.CHALLENGE_INTERVAL}ms
+CHANNEL_ID: ${config.CHANNEL_ID}
+CHANNEL_SOURCE_ID: ${config.CHANNEL_SOURCE_ID}
+`);
 
 client.login(config.TOKEN);
