@@ -83,7 +83,7 @@ export class DiscordChallengeManager {
 		const userScore = repo.getUserScore(author.id)?.score ?? 0;
 
 		embeds[0].fields.push({name: "⠀", value: "⠀"});
-		embeds[0].fields.push({name: "الفائز 🏆", value: `🏅 <@${author.id}> | ${userScore}`});
+		embeds[0].fields.push({name: "الفائز 🏆", value: `<@${author.id}> 🪙 **${userScore}**`});
 		embeds[0].fields.push({name: "⠀", value: "⠀"});
 
 		// add leaderboard
@@ -94,8 +94,8 @@ export class DiscordChallengeManager {
 			const user = leaderboards[i];
 			const icon = icons.shift();
 			embeds[0].fields.push({
-				name: icon ?? (i + 1).toString(),
-				value: `<@${user.id}> | ${user.score}`,
+				name: '',
+				value: `${icon} <@${user.id}> 🪙 **${user.score}**`,
 				inline: false
 			});
 		}
