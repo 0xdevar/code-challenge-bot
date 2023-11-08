@@ -60,7 +60,7 @@ export class DiscordChallenge {
 			.addFields({name: "⠀", value: "⠀"})
 			.addFields({name: "السـؤال 🤔", value: this._challenge.challenge, inline: false})
 			.addFields({name: "⠀", value: "⠀"})
-			.setFooter({text: meta.VERSION})
+			.setFooter({text: `${meta.VERSION} | Challenge by: ${this._challenge.author ?? "0x"}`})
 			.setTimestamp();
 
 

@@ -43,5 +43,7 @@ export async function getRandomChallenge(client: Client): Promise<Challenge> {
 
 	const content = message.content.replace(/(^```|```$)/g, "");
 
-	return Challenge.parse(content);
+	const author = message.author;
+
+	return Challenge.parse(content, author.displayName);
 }

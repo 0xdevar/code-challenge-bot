@@ -1,11 +1,12 @@
 export class Challenge {
 	private constructor(public challenge: string,
 						public choices: string[],
-						public answer: number) {
+						public answer: number,
+						public author?: string) {
 
 	}
 
-	static parse(input: string): Challenge {
+	static parse(input: string, author?: string): Challenge {
 		const chunks = input.split("@@@");
 
 		if (chunks.length < 3) {
@@ -20,6 +21,6 @@ export class Challenge {
 			throw new Error(`Could not parse ${answer}`);
 		}
 
-		return new Challenge(question, choices, answer);
+		return new Challenge(question, choices, answer, author);
 	}
 }
