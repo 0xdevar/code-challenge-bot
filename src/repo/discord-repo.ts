@@ -1,4 +1,4 @@
-import {Client, Collection, Message, TextChannel} from "discord.js";
+import {Client, Collection, Message, MessageType, TextChannel} from "discord.js";
 import * as config from "../config.ts";
 import {Challenge} from "../types/challenge.ts";
 
@@ -39,7 +39,9 @@ export async function getRandomChallenge(client: Client): Promise<Challenge> {
 
 	const messages = await channel.messages.fetch({limit: 100});
 
-	const message = pickNextMessage(messages);
+	const onlyMessages = messages.filter(m => m.type === MessageType.Default);
+
+	const message = pickNextMessage(onlyMessages);
 
 	const content = message.content.replace(/(^```|```$)/g, "");
 
