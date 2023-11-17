@@ -72,7 +72,8 @@ export class DiscordChallengeManager {
 
 		message.react("🎉");
 
-		repo.addUserScore(author.id, 1); // todo: add the score it to config
+		const score = challenge.points();
+		repo.addUserScore(author.id, score);
 
 
 		const embeds = this._currentMessage?.embeds as Embed[];

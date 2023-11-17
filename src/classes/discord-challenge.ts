@@ -8,7 +8,7 @@ import {Challenge} from "../types/challenge.ts";
 const iconURL = "https://cdn.discordapp.com/icons/942802258528198666/64ee7cadddcb9eac46a09cec3c1867e2.webp?size=160";
 
 export class DiscordChallenge {
-	static icons: string[][] = [["1️⃣", "1"], ["2️⃣", "2"], ["3️⃣", "3"]];
+	static icons: string[][] = [["1️⃣", "1"], ["2️⃣", "2"], ["3️⃣", "3"], ["4️⃣", "4"]];
 	private _challenge?: Challenge;
 	private _triedPlayers: string[] = [];
 
@@ -43,6 +43,10 @@ export class DiscordChallenge {
 		return targetIcon && targetIcon.includes(input);
 	}
 
+	points(): number {
+		return this._challenge?.points ?? 1;
+	}
+
 	content(): any {
 		// here we return the final object to send
 		if (!this._challenge) {
@@ -51,7 +55,7 @@ export class DiscordChallenge {
 
 		const challenge = new EmbedBuilder()
 			.setColor(0x680001)
-			.setTitle("تحدي 🏁")
+			.setTitle(`تحدي  🏁 | ${this.points()} 🪙`)
 			.setAuthor({
 				name: "0x",
 				iconURL: iconURL
