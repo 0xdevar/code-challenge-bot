@@ -1,4 +1,4 @@
-import {Client, Embed, Events, Message, MessageType, TextChannel} from "discord.js";
+import {Client, Embed, Events, Message, MessageType, TextChannel, EmbedBuilder} from "discord.js";
 
 import * as config from "../config.ts";
 import {DiscordChallenge} from "./discord-challenge.ts";
@@ -48,6 +48,30 @@ export class DiscordChallengeManager {
 		const challengeMessage = message.reference;
 
 		if (challengeMessage?.messageId !== this._currentMessage?.id) {
+			return;
+		}
+
+		if (message.content == "top") {
+			// add leaderboard
+			const leaderboards = await repo.getUsersOrderedByScores(10);
+			const icons = ["🥇", "🥈", "🥉"];
+
+			const embeds = new EmbedBuilder();
+
+			embeds.setTitle("Leaderboard");
+			embeds.setAuthor({name: "0x"});
+
+			for (let i = 0; i < leaderboards.length; i++) {
+				const user = leaderboards[i];
+				const icon = icons.shift() ?? i + 1;
+				embeds.addFields({
+					name: `${icon}`,
+					value: `<@${user.id}> 🪙 **${user.score}**`,
+					inline: false
+				});
+			}
+
+			await message.reply({embeds: [embeds]});
 			return;
 		}
 
